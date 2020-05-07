@@ -5,8 +5,9 @@ import (
 	"gin-vue-admin/global"
 	"gin-vue-admin/middleware"
 	"gin-vue-admin/router"
+
 	"github.com/gin-gonic/gin"
-	"github.com/swaggo/gin-swagger"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
@@ -23,7 +24,7 @@ func Routers() *gin.Engine {
 	Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	global.GVA_LOG.Debug("register swagger handler")
 	// 方便统一添加路由组前缀 多服务器上线使用
-	ApiGroup := Router.Group("")
+	ApiGroup := Router.Group("v1")
 	router.InitUserRouter(ApiGroup)                  // 注册用户路由
 	router.InitBaseRouter(ApiGroup)                  // 注册基础功能路由 不做鉴权
 	router.InitMenuRouter(ApiGroup)                  // 注册menu路由
@@ -36,6 +37,7 @@ func Routers() *gin.Engine {
 	router.InitSystemRouter(ApiGroup)                // system相关路由
 	router.InitCustomerRouter(ApiGroup)              // 客户路由
 	router.InitAutoCodeRouter(ApiGroup)              // 创建自动化代码
+	router.InitChAreaRouter(ApiGroup)                // 注册地区路由
 	global.GVA_LOG.Info("router register success")
 	return Router
 }
