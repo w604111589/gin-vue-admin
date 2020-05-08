@@ -33,5 +33,22 @@ func GetArea(c *gin.Context) {
 }
 
 func GetAreaList(c *gin.Context) {
+	areaList, err := service.GetAreaList()
+	if err != nil {
+		response.FailWithMessage(fmt.Sprintf("获取结果失败 %v", err), c)
+		return
+	}
+	response.OkWithData(resp.ChAreaListResponse{List: areaList}, c)
+}
 
+func GetAreaListByParentID(c *gin.Context) {
+	var area model.ChArea
+	c.ShouldBindQuery(&area)
+	fmt.Println(area.ParentID)
+	areaList, err := service.GetAreaListByParentID(area.ParentID)
+	if err != nil {
+		response.FailWithMessage(fmt.Sprintf("获取结果失败 %v", err), c)
+		return
+	}
+	response.OkWithData(resp.ChAreaListResponse{List: areaList}, c)
 }
